@@ -9,6 +9,7 @@ node("Slave") {
     try {
         git 'https://github.com/nguyenthang98/lms.git'
         stage("Prepare") {
+            echo "${env.BRANCH_NAME}"
             echo "Prepare to Build"
             sh "sleep 4"
         }
