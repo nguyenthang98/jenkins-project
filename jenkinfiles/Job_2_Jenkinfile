@@ -1,0 +1,41 @@
+properties([])
+
+def getDeployTarget() {
+    return "staging"
+}
+
+node("Slave") {
+    final deployTarget = getDeployTarget()
+    try {
+        stage("Prepare") {
+            echo "Prepare to Build"
+            sh "sleep 4"
+        }
+
+        stage("Build") {
+            echo "Building project"
+            sh "sleep 10"
+        }
+
+        stage("Delivery") {
+            echo "Save to Artifactory"
+            sh "sleep 6"
+        }
+
+        stage("Deploy") {
+            echo "Deploy to ${deployTarget}"
+            build job: 'Deploy', parameters: [string(name: 'DEPLOY_TARGET', value: deployTarget), string(name: 'SERVICE', value: 'service_2')]
+        }
+
+    } catch(e) {
+        echo "Catched an error: ${e.toString()}"
+        throw e
+    } finally {
+        echo "Final Step"
+        stage("Clean up") {
+            echo "Delete directory"
+            sh "sleep 1"
+            deleteDir()
+        }
+    }
+}
