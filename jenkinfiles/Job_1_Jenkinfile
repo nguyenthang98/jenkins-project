@@ -7,6 +7,7 @@ def getDeployTarget() {
 node("Slave") {
     final deployTarget = getDeployTarget()
     try {
+        git 'https://github.com/nguyenthang98/lms.git'
         stage("Prepare") {
             echo "Prepare to Build"
             sh "sleep 4"
